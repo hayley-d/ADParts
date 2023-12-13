@@ -103,6 +103,7 @@ input[type="text"]{
     border: none;
     border-bottom: 1px solid gray;
     font-size: 18px;
+    background: transparent;
 }
 
 label{
@@ -189,6 +190,6 @@ span{
     }
 
     #CAT{
-        height:150vh;
+        height:100vh;
     }
 }
