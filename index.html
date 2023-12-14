@@ -50,6 +50,11 @@
       </div>
 
       <div class = "form-item">
+        <label for = "sNumber">Serial Number<span>*</span></label>
+        <input type = text name = "sNumber" id = "sNumber" required>
+      </div>
+
+      <div class = "form-item">
         <label for = "model">Model<span>*</span></label>
         <input type = text name = "model" id = "model">
       </div>
@@ -62,11 +67,6 @@
       <div class = "form-item">
         <label for = "pNumber">Part Number<span>*</span></label>
         <input type = text name = "pNumber" id = "pNumber" required>
-      </div>
-
-      <div class = "form-item">
-        <label for = "sNumber">Serial Number<span>*</span></label>
-        <input type = text name = "sNumber" id = "sNumber" required>
       </div>
 
       <div class = "form-item">
@@ -95,11 +95,15 @@
 
 
 
-    <div id="submit"><button id = "quote" type = "submit">Get A Quote</button></div>
+    <div id="submit" onclick="changePage()"><button id = "quote" type = "submit">Get A Quote</button></div>
   </form>
 </section>
 
-
+<script>
+  function changePage(){
+    window.open('./submit.html');
+  }
+</script>
 
 </body>
 </html>
