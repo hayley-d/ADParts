@@ -21,6 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $partDescription = $_POST["p-desc"];
     $partNumber = $_POST["pNumber"];
     $originalAfter = isset($_POST["original-after"]) ? $_POST["original-after"] : "";
+
     $description = $_POST["desc"];
 
     // Compose email message
@@ -38,7 +39,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $message .= "Model: $model\n";
     $message .= "Part Description: $partDescription\n";
     $message .= "Part Number: $partNumber\n";
-    $message .= "Original/After Market: $originalAfter\n";
+    if($originalAfter === 'original')
+    {
+        $message .= "Original\n";
+    }
+    else{
+        $message .= "After Market\n";
+    }
+
     $message .= "Description: $description\n";
     echo $message;
     $mail = new PHPMailer(true);
