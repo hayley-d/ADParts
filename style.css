@@ -137,9 +137,12 @@ header{
     height:13vh;
     width:100%;
     display: flex;
+    gap:10vw;
+    justify-content: left;
+    align-items: center;
 }
 
-header > div{
+#logo{
     background-image: url("Logo.png");
     background-position: center;
     background-size: contain;
@@ -147,6 +150,22 @@ header > div{
     height:13vh;
     width:10vw;
 
+}
+
+.nav-btn{
+    color:white;
+    font-family: 'Roboto', sans-serif;
+    cursor: pointer;
+    font-size: 1.5rem;
+    text-decoration: none; /* Add this to remove default underline */
+    text-shadow: 0 0 5px rgba(255, 234, 30, 0.5); /* Add a subtle text shadow in the default state */
+    transition: text-shadow 0.3s ease;
+}
+
+.nav-btn:hover{
+    color:#ffea1e;
+    /*border-bottom: 1px solid #ffea1e;*/
+    text-shadow: 0 0 10px 5px #ffea1e;
 }
 
 #CAT{

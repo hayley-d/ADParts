@@ -1,84 +1,75 @@
 <?php
+//phpMailer namespace at the top of the page
+use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
 
-//Load Composer's autoloader
-require 'vendor/autoload.php';
+//require the path to the phpMailer classes
+require 'PHPMailer/src/Exception.php';
+require 'PHPMailer/src/PHPMailer.php';
+require 'PHPMailer/src/SMTP.php';
+
+//require the config file for all the constans
+require 'config.php';
 
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Get form data
-    // Collect form data
-    $name = $_POST["name"];
-    $lastName = $_POST["last-name"];
-    $phoneNumber = $_POST["phone-number"];
-    $email = $_POST["email"];
 
-    $make = $_POST["make"];
-    $serialNumber = $_POST["sNumber"];
-    $model = $_POST["model"];
-    $partDescription = $_POST["p-desc"];
-    $partNumber = $_POST["pNumber"];
-    $originalAfter = isset($_POST["original-after"]) ? $_POST["original-after"] : "";
 
-    $description = $_POST["desc"];
 
-    // Compose email message
-    $to = "adparts2002@gmail.com";
-    $subject = "New Quote Request";
-
-    $message = "Customer Contact Information:\n\n";
-    $message .= "Name: $name $lastName\n";
-    $message .= "Phone Number: $phoneNumber\n";
-    $message .= "Email: $email\n\n";
-
-    $message .= "Machine Part Information:\n\n";
-    $message .= "Machine Make: $make\n";
-    $message .= "Serial Number: $serialNumber\n";
-    $message .= "Model: $model\n";
-    $message .= "Part Description: $partDescription\n";
-    $message .= "Part Number: $partNumber\n";
-    if($originalAfter === 'original')
+function sendMail($subject,$message,$email = 'adparts2002@gmail.com')
     {
-        $message .= "Original\n";
-    }
-    else{
-        $message .= "After Market\n";
-    }
+        //$email where the email is sent
+        //$subject is the subject of the email
+        //$message is the message of the mail
 
-    $message .= "Description: $description\n";
-    echo $message;
-    $mail = new PHPMailer(true);
+        //create new PHPMailer object
+        $mail = new PHPMailer(true);
 
-    try {
-        //Server settings
+        //using SMTP protocol to send the email
         $mail->isSMTP();
-        $mail->Host       = 'smtp-relay.brevo.com'; // Sendinblue SMTP server
-        $mail->SMTPAuth   = true;
-        $mail->Username   = 'spamforhayley@gmail.com'; // Your Sendinblue SMTP username
-        $mail->Password   = 'FEQyt1aGfOmIC9VL'; // Your Sendinblue SMTP password
-        $mail->SMTPSecure = 'tls'; // Enable TLS encryption
-        $mail->Port       = 587; // TCP port to connect to
 
-        //Recipients
-        $mail->setFrom($email, $name.' '.$lastName);
-        $mail->addAddress($to); // Add recipient
+        //set the SMTP auth property to true so that we can use the gmail login details to send the email
+        $mail->SMTPAuth = true;
 
-        //Content
-        $mail->isHTML(false); // Set email format to plain text
+        //set the Host property to the MAILHOST value in the config
+        $mail->Host = MAILHOST;
+
+        //set the username property to the constant
+        $mail->Username = USERNAME;
+
+        //set the password
+        $mail->Password = PASSWORD;
+
+        //set the SMTPSecure to PHPMailer::ENCRYPTION_STARTTLS to use the STARTTLS encryption method
+        //this ensuders communication is encrrypted
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+
+        $mail->Port = 587;
+
+        $mail->setFrom(SEND_FROM,SEND_FROM_NAME);
+
+        $mail->addAddress($email);
+
+        $mail->addReplyTo(REPLY_TO,REPLY_TO_NAME);
+
+        $mail->isHTML(true);
+
         $mail->Subject = $subject;
-        $mail->Body    = $message;
 
-        $mail->send();
+        $mail->Body = $message;
 
-        // Redirect to a thank-you page or display a success message
-        header("Location: submit.html");
-        exit;
-    } catch (Exception $e) {
-        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        $mail->AltBody = $message;
+
+        if(!$mail->send()){
+            return "Email not sent";
+        }
+        else{
+            return "success";
+        }
     }
-}
+
+
+
 
 
 
